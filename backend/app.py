@@ -1,5 +1,8 @@
 from flask import Flask, request, jsonify
+from routes.taste_bp import taste_bp
+
 app = Flask(__name__)
+app.register_blueprint(taste_bp)
 
 @app.route("/")
 def home():
