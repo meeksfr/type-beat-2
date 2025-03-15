@@ -1,12 +1,9 @@
 from flask import Flask, request, jsonify
 from routes.taste_bp import taste_bp
-
+from routes.finder_bp import finder_bp
 app = Flask(__name__)
 app.register_blueprint(taste_bp)
-
-@app.route("/")
-def home():
-    return "xxx"
+app.register_blueprint(finder_bp)
 
 @app.route("/test", methods=["GET", "POST"])
 def test():

@@ -1,6 +1,9 @@
 from abc import ABCMeta, abstractmethod
 
 class AbstractTaste(metaclass=ABCMeta):
+    '''
+    abstract class for pulling search terms (to be used as queries for beat finding) based on user taste
+    '''
 
     def __init__(self):
         pass

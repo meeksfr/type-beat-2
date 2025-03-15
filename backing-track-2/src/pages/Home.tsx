@@ -14,7 +14,11 @@ const Home = () => {
         if (query.length > 0) {
             const response = await fetchSources(query);
             setPlaylists(response);
+            setArtists([]);
+            setSelectedArtists([]);
         } else {
+            setArtists([]);
+            setSelectedArtists([]);
             setPlaylists([]);
         }
     }
