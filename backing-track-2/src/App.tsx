@@ -2,23 +2,25 @@ import { useState, useEffect } from 'react'
 import Home from './pages/Home'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [authorized, setAuthorized] = useState(false)
 
   useEffect(() => {
     fetch("/api/taste/auth", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      method: "POST"
     })
-      .then((res) => res.json())
-      .then((data) => console.log(data))
+      .then((res) => {
+        if (res.ok) {
+          setAuthorized(true)
+        } else {
+          setAuthorized(false)
+        }
+      })
       .catch((err) => console.log(err));
   }, []);
 
   return (
     <div>
-      <Home />
+      {authorized ? <Home /> : <div>Failed to authorize with Spotify ://</div>}
     </div>
   )
 }

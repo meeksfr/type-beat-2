@@ -9,13 +9,11 @@ def auth():
     status, token, expires_in = taste_client.authorize()
     if status == 200:
         return jsonify({
-            'status': 'success',
             'token': token,
             'expires_in': expires_in
         }), 200
     else:
         return jsonify({
-            'status': 'error',
             'message': 'Failed to authenticate with Spotify'
         }), 401
     
@@ -25,12 +23,10 @@ def searchForTasteSource():
     status, data = taste_client.getTasteSource(q)
     if status == 200:
         return jsonify({
-            'status': 'success',
             'data': data
         }), 200
     else:
         return jsonify({
-            'status': 'error',
             'message': f'Failed to get taste source'
         }), 401
     
@@ -40,12 +36,10 @@ def getSearchTerms():
     status, data = taste_client.getSearchTerms(playlist_id)
     if status == 200:
         return jsonify({
-            'status': 'success',
             'data': data
         }), 200
     else:
         return jsonify({
-            'status': 'error',
             'message': f'Failed to get search terms'
         }), 401 
 

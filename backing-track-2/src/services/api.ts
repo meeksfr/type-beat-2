@@ -2,21 +2,39 @@ import axios from "axios";
 
 const API_BASE_URL = "/api";
 
+/*
+export interface Playlist {
+  id: string;
+  name: string;
+  description: string;
+  image: string;
+  tracks: Track[];
+}
 
-export const fetchPlaylists = async (query: string) => {
+export interface Track {
+  id: string;
+  name: string;
+  artist: string;
+  album: string;
+}*/
+
+export const fetchSources = async (query: string) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/test`);
-    console.log(response.data);
-    return response.data;
+    const response = await axios.get(`${API_BASE_URL}/taste/source?q=${query}`);
+    return response.data.data;
     
   } catch (error) {
-    console.error("Error fetching playlists", error, query);
-    return []; // Return empty array in case of error
+    console.error("Error fetching sources", error, query);
+    return [];
   }
 };
 
-/*  
-export const fetchPlaylists = async (query: string) => {
-    console.log("Search Query:", query); // Log the input
-  };
-*/
+export const fetchArtistsFromPlaylist = async (playlistId: string) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/taste/searchTerms?playlist_id=${playlistId}`);
+        return response.data.data;
+    } catch (error) {
+        console.error("Error pulling artists from playlist", error, playlistId);
+        return [];
+    }
+}
