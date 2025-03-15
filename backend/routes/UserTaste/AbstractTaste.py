@@ -6,5 +6,28 @@ class AbstractTaste(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def getSearchTerms(self):
+    def authorize(self):
+        '''
+        for authorizing external APIs to access user data
+        returns status, token, expires_in if successful, otherwise returns 401
+        '''
         pass
+    
+    @abstractmethod
+    def getTasteSource(self):
+        '''
+        for getting the taste source (e.g. a spotify playlist)
+        returns status, data if successful, otherwise returns 401
+        '''
+        pass
+
+
+    @abstractmethod
+    def getSearchTerms(self):
+        '''
+        for getting the specific search terms (i.e. artist names) from the taste source
+        returns status, data if successful, otherwise returns 401
+        '''
+        pass
+
+    
