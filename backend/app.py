@@ -14,7 +14,7 @@ def test():
         some_json = request.get_json()
         return jsonify({"you sent": some_json}), 201
     else:
-        return jsonify({"about": "Hello World"}), 200
+        return jsonify({"about": "yipee"}), 200
 
 if __name__ == "__main__":
     app.run(debug=True)

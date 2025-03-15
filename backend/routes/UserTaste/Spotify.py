@@ -70,7 +70,7 @@ class SpotifyTaste(AbstractTaste):
         else:
             return 401, []
 
-    def getSearchTerms(self, playlist_id: str, limit: int = 12):
+    def getSearchTerms(self, playlist_id: str, limit: int = 12) -> tuple[int, list[str]]:
         '''
         gets the search terms (i.e. artist names) from a taste source
         returns status, data
