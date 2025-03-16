@@ -15,3 +15,10 @@ class AbstractBeatFinder(metaclass=ABCMeta):
         returns a list of beat urls
         '''
         pass
+
+    @abstractmethod
+    def getBeatInfo(self) -> dict:
+        '''
+        for getting the beat info (key, bpm, producer, title, etc.) from a link
+        '''
+        pass

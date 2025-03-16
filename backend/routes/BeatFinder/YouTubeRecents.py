@@ -14,17 +14,17 @@ class YouTubeRecents(AbstractBeatFinder):
         '''
         searches YouTube with a list of queries and returns a list of links to the videos
         '''
-        allLinks = []
+        allLinks = set()
 
         try:
             for q in queries:
                 fullQuery = self.baseQuery.replace("{x}", q)
                 status, res = self.singleSearch(fullQuery, limit)
                 if status == 200:
-                    allLinks.extend(res)
+                    allLinks.update(res)
 
-            self.links = allLinks
-            return 200, allLinks
+            self.links = list(allLinks)
+            return 200, self.links
         except Exception as e:
             return 400, []
 
@@ -42,3 +42,14 @@ class YouTubeRecents(AbstractBeatFinder):
             return 200, links
         except Exception as e:
             return 400, []
+
+    def getBeatInfo(self, link: str) -> dict:
+        '''
+        gets the video info from a YouTube link
+        '''
+        try:
+            videoInfo = Video.getInfo(link, mode = ResultMode.json)
+            return 200, videoInfo
+        except Exception as e:
+            return 400, {}
+

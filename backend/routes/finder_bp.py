@@ -12,3 +12,12 @@ def search():
         return jsonify(links), 200
     else:
         return jsonify({'error': 'Failed to search'}), 400
+    
+@finder_bp.route('/finder/beatInfo', methods=['GET'])
+def beatInfo():
+    link = request.args.get('link')
+    status, info = finder_client.getBeatInfo(link)
+    if status == 200:
+        return jsonify(info), 200
+    else:
+        return jsonify({'error': 'Failed to get beat info'}), 400
