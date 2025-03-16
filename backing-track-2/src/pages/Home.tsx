@@ -3,12 +3,16 @@ import { fetchSources, fetchArtistsFromPlaylist } from "../services/api";
 import { useState, useEffect } from "react";
 import PlaylistList from "../components/PlaylistList";
 import ArtistChipContainer from "../components/ArtistChipContainer";
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import { fetchBeats } from "../services/api";
 
 const Home = () => {
     const [playlists, setPlaylists] = useState<any[]>([]);
     const [selectedPlaylist, setSelectedPlaylist] = useState<any>(null);
     const [artists, setArtists] = useState<string[]>([]);
     const [selectedArtists, setSelectedArtists] = useState<string[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSearch = async (query: string) => {
         if (query.length > 0) {
@@ -44,6 +48,16 @@ const Home = () => {
         });
     }
 
+    const handleBeatFetch = async () => {
+        setIsLoading(true);
+        try {
+            const response = await fetchBeats(selectedArtists);
+            console.log(response);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
     return (
         <div>
             <h3>backing track --- a type beat downloader</h3>
@@ -57,6 +71,20 @@ const Home = () => {
                     selectedArtists={selectedArtists}
                     onArtistClick={handleArtistClick}
                 />
+            )}
+            {selectedArtists.length > 0 && (
+                <Button 
+                    variant="contained" 
+                    color="primary" 
+                    onClick={handleBeatFetch}
+                    disabled={isLoading}
+                >
+                    {isLoading ? (
+                        <CircularProgress size="1.5rem" color="inherit" />
+                    ) : (
+                        "Fetch Type Beats"
+                    )}
+                </Button>
             )}
         </div>
     )

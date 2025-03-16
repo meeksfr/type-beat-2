@@ -28,7 +28,14 @@ const SearchBar = ({ onSearch }: { onSearch: (query: string) => void }) => {
                 label='Search for a playlist...'
                 variant="standard"
             />
-            <Button disableElevation onClick={handleSearch} variant="contained">Search</Button>
+            <Button 
+                disableElevation 
+                onClick={handleSearch} 
+                variant="contained"
+                disabled={!query.trim()}
+            >
+                Search
+            </Button>
         </div>
     )
 }

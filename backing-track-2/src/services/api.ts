@@ -38,3 +38,17 @@ export const fetchArtistsFromPlaylist = async (playlistId: string) => {
         return [];
     }
 }
+
+export const fetchBeats = async (searchTerms: string[]) => {
+    try {
+        const body = {
+            searchTerms: searchTerms
+        }
+        const response = await axios.post(`${API_BASE_URL}/finder/search`, body);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching beats", error, searchTerms);
+        return [];
+    }
+}
+
