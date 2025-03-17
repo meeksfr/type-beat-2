@@ -1,11 +1,12 @@
 import SearchBar from "../components/SearchBar";
-import { fetchSources, fetchArtistsFromPlaylist } from "../services/api";
+import { fetchSources, fetchArtistsFromPlaylist, fetchBeats, fetchBeatInfo } from "../services/api";
 import { useState, useEffect } from "react";
 import PlaylistList from "../components/PlaylistList";
 import ArtistChipContainer from "../components/ArtistChipContainer";
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
-import { fetchBeats } from "../services/api";
+import BeatStack from "../components/BeatStack";
+import { Beat } from "../types/interfaces";
 
 const Home = () => {
     const [playlists, setPlaylists] = useState<any[]>([]);
@@ -13,18 +14,20 @@ const Home = () => {
     const [artists, setArtists] = useState<string[]>([]);
     const [selectedArtists, setSelectedArtists] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [beats, setBeats] = useState<Beat[]>([]);
+    const [loadingBeats, setLoadingBeats] = useState<string[]>([]);
 
     const handleSearch = async (query: string) => {
         if (query.length > 0) {
             const response = await fetchSources(query);
             setPlaylists(response);
-            setArtists([]);
-            setSelectedArtists([]);
         } else {
-            setArtists([]);
-            setSelectedArtists([]);
             setPlaylists([]);
         }
+        setArtists([]);
+        setSelectedArtists([]);
+        setBeats([]);
+        setLoadingBeats([]);
     }
 
     const handlePlaylistClick = async (playlist: any) => {
@@ -32,8 +35,9 @@ const Home = () => {
         setPlaylists([]);
         const response = await fetchArtistsFromPlaylist(playlist.id);
         setArtists(response);
-        // Initialize all artists as selected
-        setSelectedArtists(response);
+        setSelectedArtists(response); // Initialize all artists as selected
+        setBeats([]);
+        setLoadingBeats([]);
     }
 
     const handleArtistClick = (artist: string) => {
@@ -51,8 +55,32 @@ const Home = () => {
     const handleBeatFetch = async () => {
         setIsLoading(true);
         try {
-            const response = await fetchBeats(selectedArtists);
-            console.log(response);
+            const urls = await fetchBeats(selectedArtists);
+            //initialize beats with just urls and empty fields
+            const beats: Beat[] = urls.map((url: string) => ({
+                url,
+                title: '',
+                bpm: undefined,
+                keyCenter: undefined,
+                modality: undefined,
+                thumbnailUrl: undefined
+            }));
+            setBeats(beats);
+            setLoadingBeats(urls);
+
+            // Fetch info for each beat
+            for (const url of urls) {
+                try {
+                    const beatInfo = await fetchBeatInfo(url);
+                    if (beatInfo) {
+                        setBeats(prev => prev.map(beat => 
+                            beat.url === url ? beatInfo : beat
+                        ));
+                    }
+                } finally {
+                    setLoadingBeats(prev => prev.filter(u => u !== url));
+                }
+            }
         } finally {
             setIsLoading(false);
         }
@@ -60,7 +88,7 @@ const Home = () => {
 
     return (
         <div>
-            <h3>backing track --- a type beat downloader</h3>
+            <h3>backing track --- a type beat mp3 downloader</h3>
             <SearchBar onSearch={handleSearch} />
             {playlists.length > 0 && (
                 <PlaylistList playlists={playlists} onPlaylistClick={handlePlaylistClick} />
@@ -85,6 +113,12 @@ const Home = () => {
                         "Fetch Type Beats"
                     )}
                 </Button>
+            )}
+            {beats.length > 0 && (
+                <BeatStack 
+                    beats={beats}
+                    loadingBeats={loadingBeats}
+                />
             )}
         </div>
     )

@@ -16,7 +16,19 @@ export interface Track {
   name: string;
   artist: string;
   album: string;
-}*/
+}
+
+export interface Beat {
+    url: string;
+    title?: string;
+    key?: string;
+    modality?: string;
+    bpm?: number;
+    thumbnail?: string;
+}
+export const fetchBeatInfo = async (url: string): Promise<Beat> => {
+
+*/
 
 export const fetchSources = async (query: string) => {
   try {
@@ -49,6 +61,29 @@ export const fetchBeats = async (searchTerms: string[]) => {
     } catch (error) {
         console.error("Error fetching beats", error, searchTerms);
         return [];
+    }
+}
+
+export const fetchBeatInfo = async (url: string) => {
+    try {
+        const infoResponse = await axios.get(`${API_BASE_URL}/finder/beatInfo?link=${url}`);
+        const videoInfo = infoResponse.data;
+    
+        const analysisResponse = await axios.post(`${API_BASE_URL}/analyzer/analyze`, {
+            description: videoInfo.description
+        });
+        const analysis = analysisResponse.data;
+        return {
+            url: url,
+            title: videoInfo.title,
+            thumbnailUrl: videoInfo.thumbnails[0].url,
+            bpm: analysis.bpm,
+            keyCenter: analysis.key,
+            modality: analysis.modality
+        }
+    } catch (error) {
+        console.error("Error fetching beat info", error, url);
+        return null;
     }
 }
 

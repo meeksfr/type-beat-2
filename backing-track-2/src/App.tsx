@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import Home from './pages/Home'
+import { ThemeProvider } from '@mui/material/styles'
+import theme from './theme'
 
 function App() {
   const [authorized, setAuthorized] = useState(false)
@@ -19,9 +21,11 @@ function App() {
   }, []);
 
   return (
-    <div>
-      {authorized ? <Home /> : <div>Failed to authorize with Spotify ://</div>}
-    </div>
+    <ThemeProvider theme={theme}>
+      <div>
+        {authorized ? <Home /> : <div>Failed to authorize with Spotify ://</div>}
+      </div>
+    </ThemeProvider>
   )
 }
 

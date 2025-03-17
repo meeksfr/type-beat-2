@@ -11,12 +11,12 @@ export default function ArtistChip({ artist, isSelected, onClick }: ArtistChipPr
         <Chip 
             label={artist} 
             onClick={onClick}
-            color={isSelected ? "primary" : "default"}
+            color={isSelected ? "secondary" : "default"}
             variant={isSelected ? "filled" : "outlined"}
             sx={{
                 margin: 0.5,
                 '&:hover': {
-                    backgroundColor: isSelected ? 'primary.dark' : 'action.hover',
+                    backgroundColor: isSelected ? 'secondary.dark' : 'action.hover',
                 }
             }}
         />

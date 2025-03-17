@@ -36,7 +36,7 @@ class YouTubeDescriptionAnalyzer(AbstractAnalyzer):
         match = pattern.search(description)
         if match:
             return 200, int(match.group(1) or match.group(2))
-        return 400, None
+        return 204, None
 
     def key(self, description: str) -> str:
         '''
@@ -103,4 +103,4 @@ class YouTubeDescriptionAnalyzer(AbstractAnalyzer):
                     modality = "major"  # Default assumption if no modality is given
 
                 return 200, f"{note}{accidental}", modality.capitalize()
-        return 400, None
+        return 204, None, None

@@ -10,7 +10,7 @@ class YouTubeRecents(AbstractBeatFinder):
         self.baseQuery = baseQuery
         self.links = []
 
-    def search(self, queries: list[str], limit: int = 3) -> list[str]:
+    def search(self, queries: list[str], limit: int = 2) -> list[str]:
         '''
         searches YouTube with a list of queries and returns a list of links to the videos
         '''

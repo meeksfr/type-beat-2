@@ -11,16 +11,15 @@ def analyze():
     e.g. some analyzer clients might use a text description, some might use a path to an audio file, etc.
     '''
     if isinstance(analyzer_client, YouTubeDescriptionAnalyzer):
-        #expects the python-youtube-search Video.getInfo JSON object as requestdata
-        data = request.get_json()
-        description = data['description']
+        #expects the youtube video description as requestdata
+        description = request.get_json()['description']
         bpmStatus, bpm = analyzer_client.bpm(description)
         keyStatus, key, modality = analyzer_client.key(description)
         return jsonify({
             'bpm': bpm if bpmStatus == 200 else None,
             'key': key if keyStatus == 200 else None,
             'modality': modality if keyStatus == 200 else None
-        }), 200 if bpmStatus == 200 or keyStatus == 200 else 400
+        }), 200 if bpmStatus == 200 or keyStatus == 200 else 204
     else:
         #TODO: add other analyzer client types
         return jsonify({'error': 'Other analyzer client types not supported yet'}), 400
