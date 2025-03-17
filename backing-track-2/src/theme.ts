@@ -8,9 +8,9 @@ const theme = createTheme({
       dark: '#000000',
     },
     secondary: {
-      main: '#616161',
-      light: '#757575',
-      dark: '#424242',
+      main: '#ce93d8', // Light lilac
+      light: '#e1bee7', // Very light lilac
+      dark: '#ab47bc', // Medium lilac
     },
   },
 });
