@@ -96,6 +96,7 @@ const BeatCard = ({ beat, isLoading }: { beat: Beat, isLoading: boolean }) => {
                   rel: 0,
                   modestbranding: 1,
                 },
+                host: 'https://www.youtube-nocookie.com',
               }}
             />
           )}
