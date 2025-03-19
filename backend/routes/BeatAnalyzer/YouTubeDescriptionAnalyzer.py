@@ -51,11 +51,11 @@ class YouTubeDescriptionAnalyzer(AbstractAnalyzer):
         ([-+])?           # Optionally match "-" (minor) or "+" (major)
         \s*               # Allow spaces between symbols and mode
         (?:               # Group for major/minor detection (optional)
+            (M|m)           # Case-sensitive M (Major) vs. m (Minor)
+            |               # OR
             (?i:(maj|min))    # Case-insensitive "maj" or "min"
             |               # OR
             (?i:(major|minor)) # Case-insensitive "major" or "minor"
-            |               # OR
-            (M|m)           # Case-sensitive M (Major) vs. m (Minor)
         )?
         (?!\w)            # Ensure it's not part of a larger word (prevents false positives)
         """,
