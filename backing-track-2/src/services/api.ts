@@ -75,6 +75,7 @@ export const fetchBeatInfo = async (url: string) => {
         const analysis = analysisResponse.data;
         return {
             url: url,
+            id: videoInfo.id,
             title: videoInfo.title,
             thumbnailUrl: videoInfo.thumbnails[0].url,
             bpm: analysis.bpm,
