@@ -91,6 +91,10 @@ const BeatCard = ({ beat, isLoading }: { beat: Beat, isLoading: boolean }) => {
               opts={{
                 playerVars: {
                   autoplay: 1,
+                  origin: window.location.origin,
+                  enablejsapi: 1,
+                  rel: 0,
+                  modestbranding: 1,
                 },
               }}
             />
