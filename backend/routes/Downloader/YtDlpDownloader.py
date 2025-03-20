@@ -15,22 +15,15 @@ class YtDlpDownloader(AbstractDownloader):
         os.makedirs(self.temp_dir, exist_ok=True) 
         static_ffmpeg.add_paths()
     
-    def download(self, url: str, beatInfo: dict | None = None) -> tuple[int, str]:
+    def download(self, url: str, title: str) -> tuple[int, str]:
         '''
         for downloading a beat from a youtube url and saving it with the key and bpm
         returns status, path to the downloaded file
         '''
         
-        if beatInfo is None:
-            file_name = "audio"
-        else:
-            key = beatInfo["key"]
-            bpm = beatInfo["bpm"]
-            title = beatInfo["title"]
-            title = title.replace(" ", "_")
-            title = re.sub(r'[^a-zA-Z0-9]', '_', title)
+        file_name = title.replace(" ", "_")
+        file_name = re.sub(r'[^a-zA-Z0-9]', '_', file_name)
 
-            file_name = f"{key}_{bpm}_{title}"
         output_path = os.path.join(self.temp_dir, rf"{file_name}.mp3")
 
         # Check if file already exists

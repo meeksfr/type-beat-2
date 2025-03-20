@@ -6,8 +6,9 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import { Playlist } from '../types/interfaces';
 
-const PlaylistListItem = ({playlistData, onClick }: {key: string, playlistData: any, onClick: () => void }) => {
+const PlaylistListItem = ({playlistData, onClick }: {key: string, playlistData: Playlist, onClick: () => void }) => {
     return (
         <Box 
             onClick={onClick}

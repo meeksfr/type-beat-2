@@ -1,7 +1,8 @@
 import PlaylistListItem from "./PlaylistListItem";
 import List from '@mui/material/List';
+import { Playlist } from '../types/interfaces';
 
-const PlaylistList = ({ playlists, onPlaylistClick }: { playlists: any[], onPlaylistClick: (playlist: any) => void }) => {
+const PlaylistList = ({ playlists, onPlaylistClick }: { playlists: Playlist[], onPlaylistClick: (playlist: Playlist) => void }) => {
   return (
     <List sx={{ 
       width: '100%', 

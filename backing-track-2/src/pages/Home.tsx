@@ -1,15 +1,15 @@
 import SearchBar from "../components/SearchBar";
-import { fetchSources, fetchArtistsFromPlaylist, fetchBeats, fetchBeatInfo } from "../services/api";
+import { fetchSources, fetchArtistsFromPlaylist, fetchBeatUrls, fetchBeatInfo } from "../services/api";
 import { useState } from "react";
 import PlaylistList from "../components/PlaylistList";
 import ArtistChipContainer from "../components/ArtistChipContainer";
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import BeatStack from "../components/BeatStack";
-import { Beat } from "../types/interfaces";
+import { Beat, Playlist } from "../types/interfaces";
 
 const Home = () => {
-    const [playlists, setPlaylists] = useState<any[]>([]);
+    const [playlists, setPlaylists] = useState<Playlist[]>([]);
     const [artists, setArtists] = useState<string[]>([]);
     const [selectedArtists, setSelectedArtists] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -29,7 +29,7 @@ const Home = () => {
         setLoadingBeats([]);
     }
 
-    const handlePlaylistClick = async (playlist: any) => {
+    const handlePlaylistClick = async (playlist: Playlist) => {
         setPlaylists([]);
         const response = await fetchArtistsFromPlaylist(playlist.id);
         setArtists(response);
@@ -53,15 +53,15 @@ const Home = () => {
     const handleBeatFetch = async () => {
         setIsLoading(true);
         try {
-            const urls = await fetchBeats(selectedArtists);
+            const urls = await fetchBeatUrls(selectedArtists);
             //initialize beats with just urls and empty fields
             const beats: Beat[] = urls.map((url: string) => ({
                 url,
-                title: "",
-                bpm: "",
-                keyCenter: "",
-                modality: "",
-                thumbnailUrl: ""
+                title: undefined,
+                bpm: undefined,
+                keyCenter: undefined,
+                modality: undefined,
+                thumbnailUrl: undefined
             }));
             setBeats(beats);
             setLoadingBeats(urls);

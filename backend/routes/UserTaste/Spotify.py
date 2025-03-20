@@ -89,8 +89,9 @@ class SpotifyTaste(AbstractTaste):
             #TODO: add other methods of collecting artists (e.g. most appearances, most popular, etc.)
             searchTerms = set()
             for item in response.json()["items"]:
-                for artist in item["track"]["artists"]:
-                    searchTerms.add(artist["name"])
+                if item["track"] is not None:  # Skip unavailable tracks
+                    for artist in item["track"]["artists"]:
+                        searchTerms.add(artist["name"])
                 if len(searchTerms) >= limit:
                     break
             return 200, list(searchTerms)[:limit]

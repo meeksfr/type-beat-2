@@ -8,19 +8,19 @@ export interface Beat {
     thumbnailUrl?: string;
 }
 
-/*
 export interface Playlist {
-  id: string;
-  name: string;
-  description: string;
-  image: string;
-  tracks: Track[];
+    id: string;
+    name: string;
+    images: Array<{
+        url: string;
+        height?: number;
+        width?: number;
+    }>;
+    owner: {
+        display_name: string;
+        id: string;
+    };
+    tracks: {
+        total: number;
+    };
 }
-
-export interface Track {
-  id: string;
-  name: string;
-  artist: string;
-  album: string;
-}
-  */

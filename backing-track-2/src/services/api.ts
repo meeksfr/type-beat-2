@@ -1,9 +1,9 @@
 import axios from "axios";
-import { Beat } from "../types/interfaces";
+import { Beat, Playlist } from "../types/interfaces";
 
 const API_BASE_URL = "/api";
 
-export const fetchSources = async (query: string) => {
+export const fetchSources = async (query: string): Promise<Playlist[]> => {
   try {
     const response = await axios.get(`${API_BASE_URL}/taste/source?q=${query}`);
     return response.data.data;
@@ -14,7 +14,7 @@ export const fetchSources = async (query: string) => {
   }
 };
 
-export const fetchArtistsFromPlaylist = async (playlistId: string) => {
+export const fetchArtistsFromPlaylist = async (playlistId: string): Promise<string[]> => {
     try {
         const response = await axios.get(`${API_BASE_URL}/taste/searchTerms?playlist_id=${playlistId}`);
         return response.data.data;
@@ -24,7 +24,7 @@ export const fetchArtistsFromPlaylist = async (playlistId: string) => {
     }
 }
 
-export const fetchBeats = async (searchTerms: string[]) => {
+export const fetchBeatUrls = async (searchTerms: string[]): Promise<string[]> => {
     try {
         const body = {
             searchTerms: searchTerms
@@ -62,14 +62,12 @@ export const fetchBeatInfo = async (url: string): Promise<Beat | null> => {
     }
 }
 
-export const downloadBeat = async (beat: Beat) => {
+export const downloadBeat = async (beat: Beat): Promise<string | null> => {
     try {
         const url = beat.url;
-        const key = `${beat.keyCenter}_${beat.modality}` || "";
-        const bpm = beat.bpm || "";
-        const title = beat.title || "";
+        const title = beat.title || new Date().toISOString();
 
-        const response = await axios.get(`${API_BASE_URL}/downloader/downloadWithInfo?url=${url}&key=${key}&bpm=${bpm}&title=${title}`, {
+        const response = await axios.get(`${API_BASE_URL}/downloader/download?url=${url}&title=${title}`, {
             responseType: 'blob'
         });
         
