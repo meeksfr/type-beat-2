@@ -10,7 +10,6 @@ import { Beat } from "../types/interfaces";
 
 const Home = () => {
     const [playlists, setPlaylists] = useState<any[]>([]);
-    const [selectedPlaylist, setSelectedPlaylist] = useState<any>(null);
     const [artists, setArtists] = useState<string[]>([]);
     const [selectedArtists, setSelectedArtists] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +30,6 @@ const Home = () => {
     }
 
     const handlePlaylistClick = async (playlist: any) => {
-        setSelectedPlaylist(playlist);
         setPlaylists([]);
         const response = await fetchArtistsFromPlaylist(playlist.id);
         setArtists(response);

@@ -9,9 +9,17 @@ class AbstractDownloader(ABC):
         pass
 
     @abstractmethod
-    def download(self, url: str):
+    def download(self, url: str) -> tuple[int, str]:
         '''
         for downloading a beat from a url
+        returns status, path to the downloaded file
         '''
         pass
 
+    @abstractmethod
+    def cleanUp(self) -> int:
+        '''
+        for cleaning up the temporary files
+        returns status
+        '''
+        pass

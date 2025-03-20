@@ -2,11 +2,13 @@ from flask import Flask, request, jsonify
 from routes.taste_bp import taste_bp
 from routes.finder_bp import finder_bp
 from routes.analyzer_bp import analyzer_bp
+from routes.downloader_bp import downloader_bp
 
 app = Flask(__name__)
 app.register_blueprint(taste_bp)
 app.register_blueprint(finder_bp)
 app.register_blueprint(analyzer_bp)
+app.register_blueprint(downloader_bp)
 
 @app.route("/test", methods=["GET", "POST"])
 def test():
