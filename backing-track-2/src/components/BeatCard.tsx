@@ -10,9 +10,11 @@ import DownloadIcon from '@mui/icons-material/Download';
 import { useState } from 'react';
 import YouTube from 'react-youtube';
 import Modal from '@mui/material/Modal';
+import { downloadBeat } from '../services/api';
 
 const BeatCard = ({ beat, isLoading }: { beat: Beat, isLoading: boolean }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const handleThumbnailClick = () => {
     setIsModalOpen(true);
@@ -20,6 +22,36 @@ const BeatCard = ({ beat, isLoading }: { beat: Beat, isLoading: boolean }) => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+  };
+
+  const handleDownload = async () => {
+    try {
+      setIsDownloading(true);
+      const blobUrl = await downloadBeat(beat);
+      if (blobUrl) {
+        // Create a temporary link element
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        const filenameParts = [
+          beat.keyCenter,
+          beat.modality,
+          beat.bpm,
+          beat.title
+        ].filter(Boolean);
+        
+        link.download = `${filenameParts.join('_')}.mp3`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        // Clean up the blob URL
+        window.URL.revokeObjectURL(blobUrl);
+      }
+    } catch (error) {
+      console.error('Download failed:', error);
+    
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
 
@@ -57,9 +89,14 @@ const BeatCard = ({ beat, isLoading }: { beat: Beat, isLoading: boolean }) => {
                   </Typography>
                   <IconButton 
                     color="primary"
-                    onClick={() => console.log('Download clicked')}
+                    onClick={handleDownload}
+                    disabled={isDownloading}
                   >
-                    <DownloadIcon />
+                    {isDownloading ? (
+                      <CircularProgress size="1.5rem" />
+                    ) : (
+                      <DownloadIcon />
+                    )}
                   </IconButton>
                 </Box>
               </Box>

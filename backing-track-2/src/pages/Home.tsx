@@ -1,6 +1,6 @@
 import SearchBar from "../components/SearchBar";
 import { fetchSources, fetchArtistsFromPlaylist, fetchBeats, fetchBeatInfo } from "../services/api";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import PlaylistList from "../components/PlaylistList";
 import ArtistChipContainer from "../components/ArtistChipContainer";
 import Button from '@mui/material/Button';
@@ -57,11 +57,11 @@ const Home = () => {
             //initialize beats with just urls and empty fields
             const beats: Beat[] = urls.map((url: string) => ({
                 url,
-                title: '',
-                bpm: undefined,
-                keyCenter: undefined,
-                modality: undefined,
-                thumbnailUrl: undefined
+                title: "",
+                bpm: "",
+                keyCenter: "",
+                modality: "",
+                thumbnailUrl: ""
             }));
             setBeats(beats);
             setLoadingBeats(urls);

@@ -1,34 +1,7 @@
 import axios from "axios";
+import { Beat } from "../types/interfaces";
 
 const API_BASE_URL = "/api";
-
-/*
-export interface Playlist {
-  id: string;
-  name: string;
-  description: string;
-  image: string;
-  tracks: Track[];
-}
-
-export interface Track {
-  id: string;
-  name: string;
-  artist: string;
-  album: string;
-}
-
-export interface Beat {
-    url: string;
-    title?: string;
-    key?: string;
-    modality?: string;
-    bpm?: number;
-    thumbnail?: string;
-}
-export const fetchBeatInfo = async (url: string): Promise<Beat> => {
-
-*/
 
 export const fetchSources = async (query: string) => {
   try {
@@ -64,7 +37,7 @@ export const fetchBeats = async (searchTerms: string[]) => {
     }
 }
 
-export const fetchBeatInfo = async (url: string) => {
+export const fetchBeatInfo = async (url: string): Promise<Beat | null> => {
     try {
         const infoResponse = await axios.get(`${API_BASE_URL}/finder/beatInfo?link=${url}`);
         const videoInfo = infoResponse.data;
@@ -73,7 +46,7 @@ export const fetchBeatInfo = async (url: string) => {
             description: videoInfo.description
         });
         const analysis = analysisResponse.data;
-        return {
+        const beat: Beat = {
             url: url,
             id: videoInfo.id,
             title: videoInfo.title,
@@ -82,9 +55,30 @@ export const fetchBeatInfo = async (url: string) => {
             keyCenter: analysis.key,
             modality: analysis.modality
         }
+        return beat;
     } catch (error) {
         console.error("Error fetching beat info", error, url);
         return null;
     }
 }
 
+export const downloadBeat = async (beat: Beat) => {
+    try {
+        const url = beat.url;
+        const key = `${beat.keyCenter}_${beat.modality}` || "";
+        const bpm = beat.bpm || "";
+        const title = beat.title || "";
+
+        const response = await axios.get(`${API_BASE_URL}/downloader/downloadWithInfo?url=${url}&key=${key}&bpm=${bpm}&title=${title}`, {
+            responseType: 'blob'
+        });
+        
+        // Create a blob URL from the response data
+        const blob = new Blob([response.data], { type: 'audio/mp3' });
+        const blobUrl = window.URL.createObjectURL(blob);
+        return blobUrl;
+    } catch (error) {
+        console.error("Error downloading beat", error);
+        return null;
+    }
+}

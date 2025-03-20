@@ -18,7 +18,7 @@ def downloadWithInfo():
     url = request.args.get('url')
     key = request.args.get('key')
     bpm = request.args.get('bpm')
-    title = request.args.get('title').replace(" ", "_")
+    title = request.args.get('title')
     beatInfo = {
         "key": key,
         "bpm": bpm,

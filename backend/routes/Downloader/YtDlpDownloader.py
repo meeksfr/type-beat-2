@@ -3,7 +3,7 @@ from yt_dlp import YoutubeDL
 import static_ffmpeg
 import os
 import tempfile
-import shutil
+import re
 
 class YtDlpDownloader(AbstractDownloader):
     '''
@@ -27,9 +27,11 @@ class YtDlpDownloader(AbstractDownloader):
             key = beatInfo["key"]
             bpm = beatInfo["bpm"]
             title = beatInfo["title"]
-            file_name = f"{key}_{bpm}_{title}"
+            title = title.replace(" ", "_")
+            title = re.sub(r'[^a-zA-Z0-9]', '_', title)
 
-        output_path = os.path.join(self.temp_dir, f"{file_name}.mp3")
+            file_name = f"{key}_{bpm}_{title}"
+        output_path = os.path.join(self.temp_dir, rf"{file_name}.mp3")
 
         # Check if file already exists
         if os.path.exists(output_path):
