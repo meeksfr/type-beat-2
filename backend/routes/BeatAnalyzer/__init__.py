@@ -1,0 +1,3 @@
+"""
+BeatAnalyzer module initialization.
+""" 

@@ -1,0 +1,3 @@
+"""
+BeatAnalyzer tests initialization.
+""" 

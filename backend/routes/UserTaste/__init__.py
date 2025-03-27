@@ -1,0 +1,3 @@
+"""
+UserTaste module initialization.
+""" 

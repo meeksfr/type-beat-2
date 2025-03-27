@@ -1,0 +1,3 @@
+"""
+BeatFinder module initialization.
+""" 
